@@ -34,7 +34,7 @@ const Loader = () => {
       error => {
         setTimeout(() => {
           setIsLoading(false);
-        }, 1000);
+        }, 10);
         if (error.response) {
           if (hideToast.indexOf(error.response?.config.url || '') === -1) {
           }

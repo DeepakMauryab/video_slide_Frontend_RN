@@ -1,26 +1,31 @@
-import {
-  configureStore,
-  createSerializableStateInvariantMiddleware,
-  isPlain,
-} from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
+import { persistReducer } from 'redux-persist';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import videos from '../slice/VideoSlice';
+import Users from '../slice/UserSlice';
+import UserActions from '../slice/UserActionsSlice';
 
-const isSerializable = value => Iterable.isIterable(value) || isPlain(value);
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  // blacklist: ['videos']
+}
 
-const getEntries = value =>
-  Iterable.isIterable(value) ? value.entries() : Object.entries(value);
-const serializableMiddleware = createSerializableStateInvariantMiddleware({
-  isSerializable,
-  getEntries,
+const rootReducer = combineReducers({
+  videos,
+  Users,
+  UserActions
 });
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 
 const store = configureStore({
-  reducer: {
-    video: videos,
-    middleware: [serializableMiddleware],
-  },
+  reducer: persistedReducer,
+  middleware: [thunk],
 });
+
 
 export default store;

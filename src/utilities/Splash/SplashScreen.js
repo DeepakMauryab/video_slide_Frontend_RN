@@ -4,13 +4,24 @@ import Screens from '../../constant/Screens';
 import Lottie from 'lottie-react-native';
 import { FontSize } from '../../constant/FontSize';
 import Fonts from "../../constant/Fonts";
+import { useDispatch, useSelector } from "react-redux";
+import { setModalState } from "../../redux/slice/UserActionsSlice";
 
 const SplashScreen = ({ navigation }) => {
+  const { userDetail } = useSelector(s => s.Users);
+  const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(
+      setModalState({
+        action: false,
+        message: 'you are not registered yet please register Yourself',
+        status: 'error',
+      }),
+    );
     setTimeout(() => {
       navigation.reset({
         index: 0,
-        routes: [{ name: Screens.BottomTab }],
+        routes: [{ name: userDetail?.id ? Screens.BottomTab : Screens.login }],
       });
     }, 3000);
   }, []);

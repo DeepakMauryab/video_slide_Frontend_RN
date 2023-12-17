@@ -21,12 +21,13 @@ const videos = createSlice({
       state.loading = true;
     });
     builder.addCase(getVideos.fulfilled, (state, action) => {
+      const getData = [...state.data, ...action.payload];
+      state.data = [...new Set(getData)];
       state.loading = false;
-      state.data = [...state.data, ...action.payload];
     });
     builder.addCase(getVideos.rejected, (state, action) => {
-      state.loading = false;
       state.error = action.payload;
+      state.loading = false;
     });
   },
 });

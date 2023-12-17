@@ -7,6 +7,9 @@ const Screens = {
   TabMainButton: 'TabMainButton',
   UploadVideo: 'UploadVideo',
   SplashScreen: 'SplashScreen',
+  AuthStack: 'AuthStack',
+  login: 'login',
+  SignUp: 'SignUp'
 };
 
 export default Screens;

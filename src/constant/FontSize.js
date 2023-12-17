@@ -9,4 +9,6 @@ export const FontSize = {
   FONT_XL: dpFont(17),
   FONT_XXL: dpFont(20),
   FONT_XXXL: dpFont(24),
+  FONT_XXXXL: dpFont(30),
+  FONT_XXXXXL: dpFont(38),
 };

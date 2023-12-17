@@ -3,7 +3,6 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  StyleSheet,
   Share,
 } from 'react-native';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -11,9 +10,9 @@ import Video from 'react-native-video';
 import Slider from '@react-native-community/slider';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { baseURL } from '../../api/AxiosAuth';
-import { dpHeight } from '../../utilities/SizeInDp';
 import { Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import styles from "../../Style/Styles";
 
 const VideoPlay = ({ content }) => {
   const windowWidth = Dimensions.get('window').width;
@@ -68,41 +67,15 @@ const VideoPlay = ({ content }) => {
     <View
       style={{
         backgroundColor: '#000',
-        height: windowHeight - 43,
+        height: windowHeight - 30,
         width: windowWidth,
         flex: 1,
       }}>
-      <View style={styles.back}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image
-            source={require('../../Assets/Icons/left-arrow.png')}
-            tintColor={'#fff'}
-            style={[styles.sideIcons, { height: 13, width: 13 }]}
-          />
-        </TouchableOpacity>
-        <View style={styles.backInner}>
-          <TouchableOpacity>
-            <Image
-              source={require('../../Assets/Icons/search.png')}
-              tintColor={'#fff'}
-              style={[styles.sideIcons, { height: 15, width: 15 }]}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image
-              source={require('../../Assets/Icons/camera.png')}
-              tintColor={'#fff'}
-              style={[styles.sideIcons, { height: 20, width: 20 }]}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-
       <TouchableOpacity activeOpacity={0.9} onPress={videoState}>
         <Video
           repeat
           source={{ uri: `${baseURL}${item?.item?.video}` }}
-          style={{ height: '100%', width: '100%' }}
+          style={{ height: "100%", width: windowWidth }}
           resizeMode="contain"
           paused={paused !== item.index}
           ref={videoRef}
@@ -239,89 +212,3 @@ const VideoPlay = ({ content }) => {
 
 export default VideoPlay;
 
-const styles = StyleSheet.create({
-  sideIcons: {
-    height: 25,
-    width: 25,
-    marginBottom: 5,
-  },
-  sideText: {
-    fontSize: 10,
-    color: '#fff',
-  },
-  sideIconTO: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  sideIconPrt: {
-    position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
-    top: '40%',
-    right: 10,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  stateIcon: {
-    position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    borderRadius: 40,
-    height: 70,
-    width: 70,
-    top: '50%',
-    left: '55%',
-    transform: [{ translateX: -50 }, { translateY: -50 }],
-  },
-  back: {
-    position: 'absolute',
-    top: 10,
-    left: 0,
-    zIndex: 999,
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    width: '100%',
-    paddingHorizontal: 20,
-    alignItems: 'center',
-  },
-  backInner: {
-    flexDirection: 'row',
-    gap: 15,
-    alignItems: 'center',
-  },
-  profile: {
-    position: 'absolute',
-    bottom: dpHeight(10),
-    left: 0,
-    flex: 1,
-    padding: 10,
-    width: '100%',
-  },
-  title: {
-    fontSize: 15,
-    fontWeight: '600',
-    letterSpacing: 0.3,
-    color: '#fff',
-  },
-  des: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#fff',
-    letterSpacing: 0.5,
-  },
-  subscribe: {
-    backgroundColor: 'red',
-    paddingVertical: 3,
-    paddingHorizontal: 8,
-    marginLeft: 10,
-    borderRadius: 5,
-  },
-  subText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-  },
-});

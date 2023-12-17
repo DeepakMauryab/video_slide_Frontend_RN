@@ -1,12 +1,13 @@
-import { Animated, FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Animated, FlatList, Image, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import React, { useRef, useState, useEffect } from 'react';
 import VideoPlay from '../VideoComponent/VideoPlay';
 import { useSelector, useDispatch } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import { getVideos } from '../../api/Api';
 import { Dimensions } from 'react-native';
+import styles from "../../Style/Styles";
 
-const VideoHandler = () => {
+const VideoHandler = ({ navigation }) => {
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -17,10 +18,11 @@ const VideoHandler = () => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
-  const Videos = useSelector(s => s.video.data);
+  const Videos = useSelector(s => s.videos.data);
   useEffect(() => {
-    dispatch(getVideos(`?from=${query.from}&to=${query.to}`));
-  }, [query]);
+    if (isFocused)
+      dispatch(getVideos(`?from=${query.from}&to=${query.to}`));
+  }, [query, isFocused]);
   useEffect(() => {
     if (videoIndex + 2 == Videos?.length) {
       setQuery({ from: Videos?.length, to: 2 })
@@ -52,11 +54,36 @@ const VideoHandler = () => {
   }).current;
 
   return (
-    <SafeAreaView style={{ height: windowHeight - 40, width: windowWidth }}>
+    <SafeAreaView>
+      <View style={styles.back}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image
+            source={require('../../Assets/Icons/left-arrow.png')}
+            tintColor={'#fff'}
+            style={[styles.sideIcons, { height: 13, width: 13 }]}
+          />
+        </TouchableOpacity>
+        <View style={styles.backInner}>
+          <TouchableOpacity>
+            <Image
+              source={require('../../Assets/Icons/search.png')}
+              tintColor={'#fff'}
+              style={[styles.sideIcons, { height: 15, width: 15 }]}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image
+              source={require('../../Assets/Icons/camera.png')}
+              tintColor={'#fff'}
+              style={[styles.sideIcons, { height: 20, width: 20 }]}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
       <FlatList
         data={Videos}
-        style={{ height: windowHeight - 40, width: windowWidth }}
-        keyExtractor={item => item.id}
+        // style={{ height: windowHeight - 40, width: windowWidth }}
+        keyExtractor={(item, index) => index}
         snapToAlignment="center"
         showsVerticalScrollIndicator={false}
         decelerationRate={0.5}
@@ -78,4 +105,3 @@ const VideoHandler = () => {
 
 export default VideoHandler;
 
-const styles = StyleSheet.create({});
